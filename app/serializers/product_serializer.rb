@@ -7,6 +7,5 @@ end
 
   def image
   	"#{Rails.application.routes.default_url_options[:host]}#{rails_blob_path(object.image)}" if object.image.attachment
-
   end
 end
