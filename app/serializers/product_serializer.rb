@@ -6,6 +6,7 @@ def category
 end
 
   def image
-  	"#{Rails.application.routes.default_url_options[:host]}#{rails_blob_path(object.image)}" if object.image.attachment
+  	"#{rails_blob_path(object.image)}" if object.image.attachment
+  	#{Rails.application.routes.default_url_options[:host]}
   end
 end
