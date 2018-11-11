@@ -49,6 +49,11 @@ ActiveRecord::Schema.define(version: 2018_11_09_160833) do
   create_table "orders", force: :cascade do |t|
     t.string "name"
     t.float "total"
+    t.string "username"
+    t.string "address"
+    t.string "cardnum"
+    t.string "email"
+    t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
