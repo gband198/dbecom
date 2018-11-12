@@ -32,6 +32,30 @@ class ProductsController < ApplicationController
       render json: @product.errors, status: :unprocessable_entity
     end
   end
+  
+  # GET /search
+  def search
+      products = nil
+      if !params[:input].nil?
+        params[:input] = params[:input].downcase if params[:input].is_a?(String)
+        # products = Product.search(params[:input])
+        
+        #products =  params[:input].is_a?(String)
+        products = Product.search(params[:input])
+      end
+      if !params[:category].nil? and !products.nil?
+          products = products.where(category:Category.find(params[:category])).order("created_at DESC")
+      end
+      if !params[:price_range].nil? and !products.nil?
+        price_range = params[:price_range].split("-")
+        products = products.where("price BETWEEN ? AND ?", price_range[0],  price_range[1]).order("created_at DESC")
+      end
+      if  !products.nil?
+        render json: products, status: :ok
+      else
+        render json: {empty: 'no results'}, status: :unprocessable_entity
+      end
+  end
 
   # DELETE /products/1
   def destroy
