@@ -20,7 +20,7 @@ class OrdersController < ApplicationController
     if @order.save
       params.each do |key, options|
         if key.include?("product") 
-          OrderProduct.create(order_id:params[:id],product_id:options)
+          OrderProduct.create(order_id:@order.id, product_id:options)
         end
       end
       render json: @order, status: :created, location: @order
@@ -51,6 +51,6 @@ class OrdersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def order_params
-      params.permit(:name)
+      params.permit(:name, :username, :address, :cardnum, :email, :status)
     end
 end
