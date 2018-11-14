@@ -4,6 +4,12 @@ class Product < ApplicationRecord
 
 	before_save :format_downcase
 
+	def self.search(search)
+		c = Category.where(name: search.downcase).first
+		category = if c.nil? then search else c.id end
+		where("name LIKE ? OR category_id LIKE ?", "%#{search}%", "%#{category}%").order("created_at DESC")
+	end
+
 
 	protected
   def format_downcase
