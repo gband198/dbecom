@@ -16,18 +16,25 @@ class OrdersController < ApplicationController
   # POST /orders
   def create
     @order = Order.new(order_params)
-
-    if @order.save
-      params.each do |key, options|
-        if key.include?("product") 
+      if @order.save
+        params["product"].each do |options|
           OrderProduct.create(order_id:@order.id, product_id:options)
         end
+        render json: @order, status: :created, location: @order
+      else
+        render json: @order.errors, status: :unprocessable_entity
       end
-      render json: @order, status: :created, location: @order
-    else
-      render json: @order.errors, status: :unprocessable_entity
-    end
   end
+#params["products"] do |key, options|
+ #       OrderProduct.create(order_id:@order.id, product_id:options)
+  #    end
+      #if @order.save
+      #params.each do |key, options|
+        #if key.include?("product") 
+        
+        #OrderProduct.create(order_id:@order.id, product_id:options)
+       #end
+      #end
 
   # PATCH/PUT /orders/1
   def update
@@ -51,6 +58,6 @@ class OrdersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def order_params
-      params.permit(:name, :username, :address, :cardnum, :email)
+      params.permit(:name, :username, :address, :cardnum, :email, :status)
     end
 end
